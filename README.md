@@ -8,6 +8,12 @@ A modification for Grand Theft Auto V
 
 - ScriptHookV
 
+## Building
+
+Download the ScriptHookV SDK, and clone this repo into the 'samples' folder.
+
+Then, open the `vcxproj` up in Visual Studio. (I use Visual Studio 2019 Community, so the platform toolset is set to v147 or something)
+
 ## Usage
 
 Drop the `.asi` file into your Grand Theft Auto V folder.
