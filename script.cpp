@@ -30,22 +30,6 @@ void drawWireframeBox(Vector3 pos1, Vector3 pos2, int r, int g, int b, int a)
 #undef LINE
 }
 
-void drawWireframeBoxWithRadius(Vector3 pos1, Vector3 pos2, float radius, int cornerSegments, int r, int g, int b, int a)
-{
-	float minX = min(pos1.x, pos2.x);
-	float minY = min(pos1.y, pos2.y);
-	float minZ = min(pos1.z, pos2.z);
-
-	float maxX = max(pos1.x, pos2.x);
-	float maxY = max(pos1.y, pos2.y);
-	float maxZ = max(pos1.z, pos2.z);
-
-	// Poor man's feathering: Just expand the coords lul
-	// TODO: https://stackoverflow.com/a/5394546
-
-	drawWireframeBox(v3(minX - radius, minY - radius, minZ), v3(maxX + radius, maxY + radius, maxZ), r, g, b, a);
-}
-
 void update()
 {
 	for (StuntJump jump : jumps)
@@ -54,9 +38,8 @@ void update()
 
 		// Green to start, blue to end
 		// Draw the starting box first so that it draws on top (Rockstar don't seem to do any depth buffering with these DRAW_BOX calls
-
-		drawWireframeBoxWithRadius(jump.endCoord1, jump.endCoord2, jump.endTolerance, 20, 48, 255, 255, 255);
-		drawWireframeBoxWithRadius(jump.startCoord1, jump.startCoord2, jump.startTolerance, 20, 48, 255, 48, 255);
+		drawWireframeBox(jump.endCoord1, jump.endCoord2, 48, 255, 255, 255);
+		drawWireframeBox(jump.startCoord1, jump.startCoord2, 48, 255, 48, 255);
 	}
 }
 

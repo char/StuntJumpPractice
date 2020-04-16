@@ -4,11 +4,9 @@
 struct StuntJump {
 	Vector3 startCoord1;
 	Vector3 startCoord2;
-	float startTolerance;
 
 	Vector3 endCoord1;
 	Vector3 endCoord2;
-	float endTolerance;
 };
 
 std::list<StuntJump> jumps = {};
@@ -31,10 +29,8 @@ namespace JUMPS_MISC { // So we don't conflict with the ScriptHook natives, but 
 		auto jump = StuntJump{
 			v3(x1, y1, z1),
 			v3(x2, y2, z2),
-			0.f,
 			v3(x3, y3, z3),
-			v3(x4, y4, z4),
-			0.f
+			v3(x4, y4, z4)
 		};
 
 		jumps.push_back(jump);
@@ -42,16 +38,9 @@ namespace JUMPS_MISC { // So we don't conflict with the ScriptHook natives, but 
 
 	void ADD_STUNT_JUMP_ANGLED(float x1, float y1, float z1, float x2, float y2, float z2, float radius1, float x3, float y3, float z3, float x4, float y4, float z4, float radius2, float camX, float camY, float camZ, int unk1, int unk2, int unk3)
 	{
-		auto jump = StuntJump{
-			v3(x1, y1, z1),
-			v3(x2, y2, z2),
-			radius1,
-			v3(x3, y3, z3),
-			v3(x4, y4, z4),
-			radius2
-		};
+		// TODO: How do we deal with radius1 and radius2?
 
-		jumps.push_back(jump);
+		ADD_STUNT_JUMP(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, camX, camY, camZ, unk1, unk2, unk3);
 	}
 }
 
