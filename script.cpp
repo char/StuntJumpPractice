@@ -43,8 +43,16 @@ void drawWireframeBoxWithRadius(Vector3 coord1, Vector3 coord2, float radius1, f
 
 	const float ROOT_2 = 1.41421356237f;
 
-	sizeX += abs(radius2) / (2 * ROOT_2);
-	sizeY += abs(radius1) / (2 * ROOT_2);
+	// length by radius1 and width by radius2
+	// We assume the length is longer than the width
+	if (sizeX > sizeY)
+	{
+		sizeX += abs(radius1) / (2 * ROOT_2);
+		sizeY += abs(radius2) / (2 * ROOT_2);
+	} else {
+		sizeX += abs(radius2) / (2 * ROOT_2);
+		sizeY += abs(radius1) / (2 * ROOT_2);
+	}
 
 	// Poor man's feathering: Just expand the coords lul
 	// TODO: https://stackoverflow.com/a/5394546
@@ -68,8 +76,15 @@ void drawBoxWithRadius(Vector3 coord1, Vector3 coord2, float radius1, float radi
 
 	const float ROOT_2 = 1.41421356237f;
 
-	sizeX += abs(radius2) / (2 * ROOT_2);
-	sizeY += abs(radius1) / (2 * ROOT_2);
+	if (sizeX > sizeY)
+	{
+		sizeX += abs(radius1) / (2 * ROOT_2);
+		sizeY += abs(radius2) / (2 * ROOT_2);
+	}
+	else {
+		sizeX += abs(radius2) / (2 * ROOT_2);
+		sizeY += abs(radius1) / (2 * ROOT_2);
+	}
 
 
 	GRAPHICS::DRAW_BOX(
