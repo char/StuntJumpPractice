@@ -20,6 +20,4 @@ Drop the `.asi` file into your Grand Theft Auto V folder.
 
 ## Screenshot
 
-At the moment, the boxes are ugly and we don't know how to account for `ADD_STUNT_JUMP_ANGLED`.
-
 ![](docs/screenshot.jpg)
