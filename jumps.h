@@ -84,6 +84,8 @@ Vector3 func_76(Vector3 vParam0, bool bParam1)
 }
 
 void initializeJumps() {
+	jumps.clear();
+
 	Vector3 vVar0;
 	Vector3 vVar1;
 	Vector3 vVar2;

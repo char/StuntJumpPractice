@@ -37,9 +37,9 @@ void drawWireframeBoxWithRadius(Vector3 coord1, Vector3 coord2, float radius1, f
 	float centreY = (coord1.y + coord2.y) / 2.f;
 	float centreZ = (coord1.z + coord2.z) / 2.f;
 
-	float sizeX = (max(abs(coord1.x), abs(coord2.x)) - min(abs(coord1.x), abs(coord2.x))) / 2.f;
-	float sizeY = (max(abs(coord1.y), abs(coord2.y)) - min(abs(coord1.y), abs(coord2.y))) / 2.f;
-	float sizeZ = (max(abs(coord1.z), abs(coord2.z)) - min(abs(coord1.z), abs(coord2.z))) / 2.f;
+	float sizeX = abs(coord1.x - coord2.x) / 2.f;
+	float sizeY = abs(coord1.y - coord2.y) / 2.f;
+	float sizeZ = abs(coord1.z - coord2.z) / 2.f;
 
 	const float ROOT_2 = 1.41421356237f;
 
@@ -70,9 +70,9 @@ void drawBoxWithRadius(Vector3 coord1, Vector3 coord2, float radius1, float radi
 	float centreY = (coord1.y + coord2.y) / 2.f;
 	float centreZ = (coord1.z + coord2.z) / 2.f;
 
-	float sizeX = (max(abs(coord1.x), abs(coord2.x)) - min(abs(coord1.x), abs(coord2.x))) / 2.f;
-	float sizeY = (max(abs(coord1.y), abs(coord2.y)) - min(abs(coord1.y), abs(coord2.y))) / 2.f;
-	float sizeZ = (max(abs(coord1.z), abs(coord2.z)) - min(abs(coord1.z), abs(coord2.z))) / 2.f;
+	float sizeX = abs(coord1.x - coord2.x) / 2.f;
+	float sizeY = abs(coord1.y - coord2.y) / 2.f;
+	float sizeZ = abs(coord1.z - coord2.z) / 2.f;
 
 	const float ROOT_2 = 1.41421356237f;
 
