@@ -1,5 +1,6 @@
 #include "script.h"
 #include "utils.h"
+#include "keyboard.h"
 #include "jumps.h"
 
 void drawWireframeBox(Vector3 pos1, Vector3 pos2, int r, int g, int b, int a)
@@ -87,7 +88,7 @@ void drawBoxWithRadius(Vector3 coord1, Vector3 coord2, float radius, int r, int 
 	);
 }
 
-void update()
+void drawJumps()
 {
 	// For some reason on patch v1.27, drawing a regular box messes up all line drawing, so we draw all the wireframe boxes first, then the solid ones.
 
@@ -112,7 +113,13 @@ void main()
 
 	while (true)
 	{
-		update();
+		static bool enabled = true;
+		if (IsKeyJustUp(VK_F4))
+			enabled = !enabled;
+
+		if (enabled)
+			drawJumps();
+
 		WAIT(0);
 	}
 }
