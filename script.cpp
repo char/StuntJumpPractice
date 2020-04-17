@@ -31,7 +31,7 @@ void drawWireframeBox(Vector3 pos1, Vector3 pos2, int r, int g, int b, int a)
 #undef LINE
 }
 
-void drawWireframeBoxWithRadius(Vector3 coord1, Vector3 coord2, float radius, int r, int g, int b, int a)
+void drawWireframeBoxWithRadius(Vector3 coord1, Vector3 coord2, float radius1, float radius2, int r, int g, int b, int a)
 {
 	float centreX = (coord1.x + coord2.x) / 2.f;
 	float centreY = (coord1.y + coord2.y) / 2.f;
@@ -43,9 +43,8 @@ void drawWireframeBoxWithRadius(Vector3 coord1, Vector3 coord2, float radius, in
 
 	const float ROOT_2 = 1.41421356237f;
 
-	radius = abs(radius);
-	sizeX += radius / (2 * ROOT_2);
-	sizeY += radius / (2 * ROOT_2);
+	sizeX += abs(radius2) / (2 * ROOT_2);
+	sizeY += abs(radius1) / (2 * ROOT_2);
 
 	// Poor man's feathering: Just expand the coords lul
 	// TODO: https://stackoverflow.com/a/5394546
@@ -57,7 +56,7 @@ void drawWireframeBoxWithRadius(Vector3 coord1, Vector3 coord2, float radius, in
 	);
 }
 
-void drawBoxWithRadius(Vector3 coord1, Vector3 coord2, float radius, int r, int g, int b, int a)
+void drawBoxWithRadius(Vector3 coord1, Vector3 coord2, float radius1, float radius2, int r, int g, int b, int a)
 {
 	float centreX = (coord1.x + coord2.x) / 2.f;
 	float centreY = (coord1.y + coord2.y) / 2.f;
@@ -69,9 +68,8 @@ void drawBoxWithRadius(Vector3 coord1, Vector3 coord2, float radius, int r, int 
 
 	const float ROOT_2 = 1.41421356237f;
 
-	radius = abs(radius);
-	sizeX += radius / (2 * ROOT_2);
-	sizeY += radius / (2 * ROOT_2);
+	sizeX += abs(radius2) / (2 * ROOT_2);
+	sizeY += abs(radius1) / (2 * ROOT_2);
 
 
 	GRAPHICS::DRAW_BOX(
@@ -97,7 +95,7 @@ void drawJumps()
 	for (StuntJump jump : jumps)
 	{
 		drawWireframeBox(jump.endCoord1, jump.endCoord2, 48, 255, 255, 255);
-		drawWireframeBoxWithRadius(jump.endCoord1, jump.endCoord2, jump.radius2, 0, 0, 0, 255);
+		drawWireframeBoxWithRadius(jump.endCoord1, jump.endCoord2, jump.radius1, jump.radius2, 0, 0, 0, 255);
 		drawWireframeBox(jump.startCoord1, jump.startCoord2, 48, 255, 48, 255);
 	}
 
@@ -109,7 +107,7 @@ void drawJumps()
 
 	for (StuntJump jump : jumps)
 	{
-		drawBoxWithRadius(jump.endCoord1, jump.endCoord2, jump.radius2, 255, 255, 255, opacity);
+		drawBoxWithRadius(jump.endCoord1, jump.endCoord2, jump.radius1, jump.radius2, 255, 255, 255, opacity);
 	}
 }
 
