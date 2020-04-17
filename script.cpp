@@ -101,9 +101,15 @@ void drawJumps()
 		drawWireframeBox(jump.startCoord1, jump.startCoord2, 48, 255, 48, 255);
 	}
 
+	static int opacity = 31;
+	if (IsKeyJustUp(VK_F3))
+		opacity -= 8 * IsKeyDown(VK_SHIFT) ? -1 : 1;
+
+	opacity = min(max(opacity, 0), 255);
+
 	for (StuntJump jump : jumps)
 	{
-		drawBoxWithRadius(jump.endCoord1, jump.endCoord2, jump.radius2, 255, 255, 255, 63);
+		drawBoxWithRadius(jump.endCoord1, jump.endCoord2, jump.radius2, 255, 255, 255, opacity);
 	}
 }
 
