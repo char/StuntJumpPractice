@@ -103,7 +103,7 @@ void drawJumps()
 
 	static int opacity = 31;
 	if (IsKeyJustUp(VK_F3))
-		opacity -= 8 * IsKeyDown(VK_SHIFT) ? -1 : 1;
+		opacity -= 8 * (IsKeyDown(VK_SHIFT) ? -1 : 1);
 
 	opacity = min(max(opacity, 0), 255);
 
