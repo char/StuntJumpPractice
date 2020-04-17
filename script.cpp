@@ -2,8 +2,6 @@
 #include "utils.h"
 #include "jumps.h"
 
-#define PI 3.14159265358979323846
-
 void drawWireframeBox(Vector3 pos1, Vector3 pos2, int r, int g, int b, int a)
 {
 	float minX = min(pos1.x, pos2.x);
@@ -14,7 +12,7 @@ void drawWireframeBox(Vector3 pos1, Vector3 pos2, int r, int g, int b, int a)
 	float maxY = max(pos1.y, pos2.y);
 	float maxZ = max(pos1.z, pos2.z);
 
-#define LINE(_x1, yc1, _z1, _x2, _y2, _z2) GRAPHICS::DRAW_LINE(_x1, yc1, _z1, _x2, _y2, _z2, r, g, b, a)
+#define LINE(x1, y1, z1, x2, y2, z2) GRAPHICS::DRAW_LINE(x1, y1, z1, x2, y2, z2, r, g, b, a)
 	LINE(minX, minY, minZ, maxX, minY, minZ);
 	LINE(maxX, minY, minZ, maxX, minY, maxZ);
 	LINE(maxX, minY, maxZ, minX, minY, maxZ);
@@ -80,17 +78,31 @@ void drawBoxWithRadius(Vector3 coord1, Vector3 coord2, float radius, int r, int 
 		centreX + sizeX, centreY + sizeY, centreZ + sizeZ,
 		r, g, b, a
 	);
+
+	// And the backfaces:
+	GRAPHICS::DRAW_BOX(
+		centreX + sizeX, centreY + sizeY, centreZ + sizeZ,
+		centreX - sizeX, centreY - sizeY, centreZ - sizeZ,
+		r, g, b, a
+	);
 }
 
 void update()
 {
+	// For some reason on patch v1.27, drawing a regular box messes up all line drawing, so we draw all the wireframe boxes first, then the solid ones.
+
+	GRAPHICS::CLEAR_DRAW_ORIGIN();
+
 	for (StuntJump jump : jumps)
 	{
-		// Green to start, blue to end
 		drawWireframeBox(jump.endCoord1, jump.endCoord2, 48, 255, 255, 255);
-		drawWireframeBoxWithRadius(jump.endCoord1, jump.endCoord2, jump.radius2, 255, 255, 255, 255);
-		drawBoxWithRadius(jump.endCoord1, jump.endCoord2, jump.radius2, 255, 255, 255, 63);
+		drawWireframeBoxWithRadius(jump.endCoord1, jump.endCoord2, jump.radius2, 0, 0, 0, 255);
 		drawWireframeBox(jump.startCoord1, jump.startCoord2, 48, 255, 48, 255);
+	}
+
+	for (StuntJump jump : jumps)
+	{
+		drawBoxWithRadius(jump.endCoord1, jump.endCoord2, jump.radius2, 255, 255, 255, 63);
 	}
 }
 
