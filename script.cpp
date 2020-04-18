@@ -100,6 +100,23 @@ void drawBoxWithRadius(Vector3 coord1, Vector3 coord2, float radius1, float radi
 		r, g, b, a
 	);
 }
+void ShowSubtitle(char* text)
+{
+	UI::BEGIN_TEXT_COMMAND_PRINT("STRING");
+	UI::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(text);
+	UI::END_TEXT_COMMAND_PRINT(2000, 1);
+}
+char* stringToCharPtr(std::string string) {
+	// if using C++ 2017 or later in Visual Studio and the below #if is inactive see https://docs.microsoft.com/en-us/cpp/build/reference/zc-cplusplus?view=vs-2017
+#if __cplusplus >= 201703L
+	return string.data();
+#else
+	std::vector<char> tmp{ begin(string), end(string) };
+	tmp.push_back('\0'); // ensure null terminated
+	char* ret = tmp.data();
+	return ret;
+#endif
+}
 
 void drawJumps()
 {
@@ -116,7 +133,12 @@ void drawJumps()
 
 	static int opacity = 31;
 	if (IsKeyJustUp(VK_F3))
+	{
 		opacity -= 8 * (IsKeyDown(VK_SHIFT) ? -1 : 1);
+		std::string message = "Opacity changed to: " + std::to_string(opacity);
+		ShowSubtitle(stringToCharPtr(message));
+	}
+
 
 	opacity = min(max(opacity, 0), 255);
 
