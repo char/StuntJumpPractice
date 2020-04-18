@@ -1,61 +1,70 @@
-#include "../../inc/types.h";
-#include <list>;
+#include "../../inc/types.h"
+#include "vectors.h"
+
+#include <list>
+
+typedef struct
+{
+	Vector3 start;
+	Vector3 end;
+	float width;
+} RotatableCuboid;
 
 struct StuntJump {
-	Vector3 startCoord1;
-	Vector3 startCoord2;
-
-	Vector3 endCoord1;
-	Vector3 endCoord2;
-
-	float radius1, radius2;
+	RotatableCuboid jump;
+	RotatableCuboid landing;
 };
 
-std::list<StuntJump> jumps = {};
+std::list<StuntJump> stunts = {};
 
 // Shims so that we can just paste the (processed) decompiled game script into this and extract the jump data
 
-// Helper function to create a vector3, since there is explicit padding we can't use the literal syntax.
-Vector3 v3(float x, float y, float z)
+RotatableCuboid processAxisAlignedBB(float x1, float y1, float z1, float x2, float y2, float z2)
 {
-	Vector3 v;
-	v.x = x;
-	v.y = y;
-	v.z = z;
-	return v;
+	float centreX = (x1 + x2) / 2.f;
+	float width = abs(y1 - y2);
+	
+	return {
+		v3(centreX, min(y1, y2), min(z1, z2)),
+		v3(centreX, max(y1, y2), max(z1, z2)),
+		width
+	};
 }
 
 namespace JUMPS_MISC { // So we don't conflict with the ScriptHook natives, but it's easy to find and replace 'MISC::' with 'JUMPS_MISC::'
 	void ADD_STUNT_JUMP(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float camX, float camY, float camZ, int unk1, int unk2 = 0, int unk3 = 0)
 	{
-		auto jump = StuntJump{
-			v3(x1, y1, z1),
-			v3(x2, y2, z2),
-			v3(x3, y3, z3),
-			v3(x4, y4, z4)
-		};
+		RotatableCuboid jump = processAxisAlignedBB(x1, y1, z1, x2, y2, z2);
+		RotatableCuboid landing = processAxisAlignedBB(x3, y3, z3, x4, y4, z4);
 
-		jumps.push_back(jump);
+		stunts.push_back({
+			jump,
+			landing
+		});
 	}
 
 	void ADD_STUNT_JUMP_ANGLED(float x1, float y1, float z1, float x2, float y2, float z2, float radius1, float x3, float y3, float z3, float x4, float y4, float z4, float radius2, float camX, float camY, float camZ, int unk1, int unk2, int unk3)
 	{
-		auto jump = StuntJump{
+		RotatableCuboid jump = {
 			v3(x1, y1, z1),
 			v3(x2, y2, z2),
+			radius1
+		};
+
+		RotatableCuboid landing = {
 			v3(x3, y3, z3),
 			v3(x4, y4, z4),
-
-			radius1,
 			radius2
 		};
 
-		jumps.push_back(jump);
+		stunts.push_back({
+			jump,
+			landing
+		});
 	}
 }
 
 // Decompiled game script:
-
 
 Vector3 func_75(Vector3 vParam0, bool bParam1)
 {
@@ -84,7 +93,7 @@ Vector3 func_76(Vector3 vParam0, bool bParam1)
 }
 
 void initializeJumps() {
-	jumps.clear();
+	stunts.clear();
 
 	Vector3 vVar0;
 	Vector3 vVar1;
